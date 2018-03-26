@@ -171,6 +171,7 @@ class Suavizacao:
                     
 
     def testLayerAtivo(self):
+        #testa se existe uma camada selecionada
         if(not self.iface.activeLayer()):
             self.iface.messageBar().pushMessage("Selecione uma Camada.", level=QgsMessageBar.INFO, duration=5)
             return False
