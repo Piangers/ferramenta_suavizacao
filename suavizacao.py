@@ -22,17 +22,13 @@ class Suavizacao:
         self.action.setStatusTip(None)
         self.action.setWhatsThis(None)
         QObject.connect (self.action, SIGNAL ("triggered()"), self.suaviza)
-
-        # Adicionar o botão da barra de ferramentas e item de menu 
+        # Adicionar o botão icone
         self.iface.addToolBarIcon (self.action) 
-        self.iface.addPluginToMenu ("&Suavizacao", self.action)
 
     def unload(self):
-        
-        # remove o item de menu do plug-in e o ícone do QGIS GUI.
-        self.iface.removePluginMenu (u'&Suavizacao', self.action)
+        # remove o item de ícone do QGIS GUI.
         self.iface.removeToolBarIcon (self.action)
-        # remove the toolbar
+        
         
     def suaviza(self):
         if(self.testLayerAtivo()):
