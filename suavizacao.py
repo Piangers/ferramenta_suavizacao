@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from qgis.core import QGis, QgsGeometry
+from qgis.core import QGis
 from PyQt4.QtGui import QIcon, QAction
 from PyQt4.QtCore import QObject, SIGNAL
 import resources_rc  
@@ -34,8 +34,6 @@ class Suavizacao:
         if(self.testLayerAtivo()):
             if(self.testMetro() and self.testTipoGeometria() and self.testGeometriaSelecionada()):
                 layer = self.iface.activeLayer()
-                #if(self.iface.QgsGeometry().smooth()):
-                #Um laço que percorre as imagens selecionadas e guarda na variavel: feat.
                 for feat in layer.selectedFeatures():
                     #geom recebe a geometria na posição selecionada
                     geom = feat.geometry()
@@ -63,7 +61,7 @@ class Suavizacao:
 
     def testTipoGeometria(self):
         if(not self.iface.activeLayer().geometryType() == QGis.Line):
-            self.iface.messageBar().pushMessage("A camada deve possuir geometrias do tipo linha.", level=QgsMessageBar.INFO, duration=5)
+            self.iface.messageBar().pushMessage("A camada deve possuir geometrias do tipo Linha.", level=QgsMessageBar.INFO, duration=5)
             return False
         elif(not self.iface.activeLayer().isEditable()):
             self.iface.messageBar().pushMessage ("A camada deve estar em modo edivel.", level=QgsMessageBar.INFO, duration=5)
@@ -73,7 +71,7 @@ class Suavizacao:
 
     def testGeometriaSelecionada(self):
         if(not len(self.iface.activeLayer().selectedFeatures()) > 0):
-            self.iface.messageBar().pushMessage("Deve haver pelo menos uma geometria linha selecionada.", level=QgsMessageBar.INFO, duration=5)
+            self.iface.messageBar().pushMessage("Deve haver pelo menos uma geometria do tipo Linha selecionada.", level=QgsMessageBar.INFO, duration=5)
             return False
         else:
             return True        
