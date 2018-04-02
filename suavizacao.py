@@ -1,42 +1,31 @@
 # -*- coding: utf-8 -*-
 
-from qgis.core import QGis, QgsVectorLayer, QgsGeometry
-from PyQt4 import QtCore, QtGui
+from qgis.core import QGis, QgsGeometry
 from PyQt4.QtGui import QIcon, QAction
-from PyQt4.QtCore import *
-
-
-# Initialize Qt resources from file resources.py
-import resources_rc
-import os.path     
+from PyQt4.QtCore import QObject, SIGNAL
+import resources_rc  
 from qgis.gui import QgsMessageBar
 
 class Suavizacao:
-    
 
     def __init__(self, iface):
         
         self.iface = iface
-
 
     def initGui(self):
          
         # cria uma ação que iniciará a configuração do plugin 
         pai = self.iface.mainWindow()
         icon_path = ':/plugins/Suavizacao/w.png'
-        
-        
-        self.action = QAction (QIcon (icon_path),"Suaviza_linha", pai)
-        self.action.setObjectName ("Suaviza_linha")
-        self.action.setStatusTip('status_tip')
-        self.action.setWhatsThis('whats_this')
-        QObject.connect (self.action, SIGNAL ("triggered ()"), self.run)
+        self.action = QAction (QIcon (icon_path),"Suavizar linha", pai)
+        self.action.setObjectName ("Suavizar linha")
+        self.action.setStatusTip(None)
+        self.action.setWhatsThis(None)
+        QObject.connect (self.action, SIGNAL ("triggered()"), self.suaviza)
 
         # Adicionar o botão da barra de ferramentas e item de menu 
         self.iface.addToolBarIcon (self.action) 
         self.iface.addPluginToMenu ("&Suavizacao", self.action)
-
-
 
     def unload(self):
         
@@ -45,11 +34,9 @@ class Suavizacao:
         self.iface.removeToolBarIcon (self.action)
         # remove the toolbar
         
-
-    def run(self):
+    def suaviza(self):
         if(self.testLayerAtivo()):
             if(self.testMetro() and self.testTipoGeometria() and self.testGeometriaSelecionada()):
-                
                 layer = self.iface.activeLayer()
                 #if(self.iface.QgsGeometry().smooth()):
                 #Um laço que percorre as imagens selecionadas e guarda na variavel: feat.
@@ -63,20 +50,17 @@ class Suavizacao:
                     # mapCanvas() é tudo apresentado na tela do QGIS e ela é atualizada com o metodo: refresh()
                     self.iface.mapCanvas().refresh()
                     
-
     def testLayerAtivo(self):
         #testa se existe uma camada selecionada
         if(not self.iface.activeLayer()):
             self.iface.messageBar().pushMessage("Selecione uma Camada.", level=QgsMessageBar.INFO, duration=5)
             return False
-        
         else:
             return True
 
     def testMetro(self):
         
         if (not self.iface.activeLayer().crs().mapUnits() == QGis.Meters):
-            
             return False
         else:
             return True
