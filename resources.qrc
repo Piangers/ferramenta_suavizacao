@@ -1,5 +1,5 @@
 <RCC>
-    <qresource prefix="/plugins/Suavizacao" >
-        <file>w.png</file>
+    <qresource prefix="/plugins/Suavizar_linhas" >
+        <file>icon.png</file>
     </qresource>
 </RCC>
